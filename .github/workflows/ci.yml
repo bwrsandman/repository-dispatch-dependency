@@ -1,0 +1,14 @@
+name: Sending push from dependency, needs PAT with public repo access set as a repo secret.
+on: push
+
+jobs:
+  send-event:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: bwrsandman/repository-dispatch-dependent
+          event-type: my-event
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
